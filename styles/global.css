@@ -1,0 +1,23 @@
+/* styles/globals.css */
+
+:root {
+    --foreground-color: #101010;
+    --background-solid-color: #FFFFFF;
+    --linear-grad: linear-gradient(to right, #FFFFFF, #FFFFFF);
+    --radial-grad: radial-gradient(circle, #ff7e5f, #feb47b);
+    --background-type: var(--background-solid-color);
+}
+
+
+* {
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    color: var(--foreground-color);
+    background-color: var(--background-solid-color);
+    background: var(--background-type);
+}

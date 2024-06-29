@@ -1,95 +1,85 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
+import React, { useEffect, useState } from 'react';
+import styles from '@/styles/app.module.css';
+import '@/styles/global.css';
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+import SpaceDashboardIcon from '@mui/icons-material/SpaceDashboard';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import AnalyticsIcon from '@mui/icons-material/Analytics';
+import PersonIcon from '@mui/icons-material/Person';
+import MailIcon from '@mui/icons-material/Mail';
+import ContrastIcon from '@mui/icons-material/Contrast';
+import SettingsIcon from '@mui/icons-material/Settings';
+import ThemePage from '@/components/themePage';
+import ProfilePage from '@/components/profilePage';
+import AnalyticPage from '@/components/analyticPage';
+import OtherPage from '@/components/otherPage';
+
+function App() {
+    const [foreground, setForeground] = useState(() => {
+        return document.documentElement.style.getPropertyValue('--foreground-color');
+    });
+
+    const [activePage, setActivePage] = useState('home');
+
+    useEffect(() => {
+        const root = document.documentElement;
+        const observer = new MutationObserver(() => {
+          const newColor = root.style.getPropertyValue('--foreground-color');
+          setForeground(newColor);
+        });
+    
+        observer.observe(root, { attributes: true, attributeFilter: ['style'] });
+    
+        return () => observer.disconnect();
+      }, []);
+
+    // Conditional rendering for the ProfilePage
+    if (activePage === 'profile') {
+        return <ProfilePage setActivePage={setActivePage} />;
+    }
+
+    // Default rendering for other pages
+    return (
+        <div className={styles.app_container}>
+            {
+                (activePage !== 'profile' && activePage !== 'analytics') && 
+                <div className={`${styles.left_container} ${foreground === '#FFFFFF' ? styles.dark_background : ''}`}>
+                    <div className={styles.logo}>
+                        Logo Here
+                    </div>
+
+                    <div className={styles.menu}>
+                        <span className={styles.menu_span}>Menu</span>
+                        <ul>
+                            <li onClick={() => setActivePage('home')}><SpaceDashboardIcon /> Home</li>
+                            <li onClick={() => setActivePage('schedule')}><CalendarTodayIcon /> Schedule</li>
+                            <li onClick={() => setActivePage('recommendation')}><AssignmentIcon /> Recommendation</li>
+                            <li onClick={() => setActivePage('analytics')}><AnalyticsIcon /> Analytics</li>
+                            <li onClick={() => setActivePage('profile')}><PersonIcon /> Profile</li>
+                            <li onClick={() => setActivePage('inbox')}><MailIcon /> Inbox</li>
+                            <li onClick={() => setActivePage('themes')}><ContrastIcon /> Themes</li>
+                        </ul>
+
+                        <span className={styles.account_span}>Account</span>
+
+                        <ul>
+                            <li onClick={() => setActivePage('settings')}><SettingsIcon /> Settings</li>
+                        </ul>
+                    </div>
+                </div>
+            }
+
+            <div className={styles.right_container}>
+                {activePage === 'analytics' && <AnalyticPage />}
+                {activePage === 'themes' && <ThemePage />}
+                {(activePage !== 'profile' && activePage !== 'analytics' && activePage !== 'themes') && (
+                    <OtherPage name={activePage} />
+                )}
+            </div>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+    );
 }
+
+export default App;
