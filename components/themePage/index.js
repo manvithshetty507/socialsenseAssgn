@@ -9,10 +9,11 @@ function ThemePage() {
     const [foreground, setForeground] = useState('');
 
     useEffect(() => {
-        const root = document.documentElement;
-        const color = root.style.getPropertyValue('--foreground-color');
-        setForeground(color);
-    }, []);
+        if (typeof window !== 'undefined') {
+          const fgColor = document.documentElement.style.getPropertyValue('--foreground-color');
+          setForeground(fgColor);
+        }
+      }, []);
 
 
     const [name, setName] = useState('Kushagra singh');
