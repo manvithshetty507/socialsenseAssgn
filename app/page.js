@@ -72,7 +72,7 @@ function App() {
             }
 
             <div className={styles.right_container}>
-                {activePage === 'analytics' && <AnalyticPage />}
+                {activePage === 'analytics' && <AnalyticPage setActivePage={setActivePage}/>}
                 {activePage === 'themes' && <ThemePage />}
                 {(activePage !== 'profile' && activePage !== 'analytics' && activePage !== 'themes') && (
                     <OtherPage name={activePage} />
