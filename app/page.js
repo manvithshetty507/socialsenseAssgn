@@ -17,23 +17,16 @@ import AnalyticPage from '@/components/analyticPage';
 import OtherPage from '@/components/otherPage';
 
 function App() {
-    const [foreground, setForeground] = useState(() => {
-        return document.documentElement.style.getPropertyValue('--foreground-color');
-    });
+    const [foreground, setForeground] = useState('');
 
     const [activePage, setActivePage] = useState('home');
 
     useEffect(() => {
-        const root = document.documentElement;
-        const observer = new MutationObserver(() => {
-          const newColor = root.style.getPropertyValue('--foreground-color');
-          setForeground(newColor);
-        });
-    
-        observer.observe(root, { attributes: true, attributeFilter: ['style'] });
-    
-        return () => observer.disconnect();
-      }, []);
+        if (typeof window !== 'undefined') {
+            const fgColor = window.getComputedStyle(document.documentElement).getPropertyValue('--foreground-color').trim();
+            setForeground(fgColor);
+        }
+    }, []);
 
     // Conditional rendering for the ProfilePage
     if (activePage === 'profile') {
