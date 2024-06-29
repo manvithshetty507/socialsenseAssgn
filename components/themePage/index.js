@@ -7,30 +7,30 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 function ThemePage() {
 
     const [foreground, setForeground] = useState('');
+    const [name, setName] = useState('Kushagra singh');
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
-          const fgColor = document.documentElement.style.getPropertyValue('--foreground-color');
-          setForeground(fgColor);
+            const fgColor = window.getComputedStyle(document.documentElement).getPropertyValue('--foreground-color').trim();
+            setForeground(fgColor);
         }
-      }, []);
-
-
-    const [name, setName] = useState('Kushagra singh');
+    }, []);
 
     const setTheme = (type, value) => {
-        if (type === 'solid') {
-            document.documentElement.style.setProperty('--background-solid-color', value);
-            document.documentElement.style.setProperty('--background-type', value);
-        } else if (type === 'linear') {
-            document.documentElement.style.setProperty('--linear-grad', value);
-            document.documentElement.style.setProperty('--background-type', value);
-        } else if (type === 'radial') {
-            document.documentElement.style.setProperty('--radial-grad', value);
-            document.documentElement.style.setProperty('--background-type', value);
-        } else if (type === 'foreground') {
-            document.documentElement.style.setProperty('--foreground-color', value);
-            setForeground(value);
+        if (typeof window !== 'undefined') {
+            if (type === 'solid') {
+                document.documentElement.style.setProperty('--background-solid-color', value);
+                document.documentElement.style.setProperty('--background-type', value);
+            } else if (type === 'linear') {
+                document.documentElement.style.setProperty('--linear-grad', value);
+                document.documentElement.style.setProperty('--background-type', value);
+            } else if (type === 'radial') {
+                document.documentElement.style.setProperty('--radial-grad', value);
+                document.documentElement.style.setProperty('--background-type', value);
+            } else if (type === 'foreground') {
+                document.documentElement.style.setProperty('--foreground-color', value);
+                setForeground(value);
+            }
         }
     };
     
